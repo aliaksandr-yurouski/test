@@ -1,38 +1,59 @@
 package com.epam;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
+public class AppTest extends Assert
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+    @DataProvider
+    public Object[][] dataProvider(){
+        return new Object[][]{
+                {2,2,4},
+                {2,3,5},
+                {3,3,6}
+        };
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
+    @BeforeSuite
+    public void beforeSuite(){
+        System.out.println("before suite.");
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    @BeforeTest
+    public void beforeTest(){
+        System.out.println("before test.");
+    }
+
+    @BeforeClass
+    public void beforeClass(){
+        System.out.println("before class.");
+    }
+
+    @BeforeMethod
+    public void beforeMethod(){
+        System.out.println("before method.");
+    }
+
+    @Test(dataProvider = "dataProvider")
+    public void testCase(int first, int second, int expected_result){
+        System.out.println("testCase.");
+        assertEquals(first + second, expected_result);
+    }
+
+    @Test
+    public void anotherTestCase(){
+        System.out.println("anotherTestCase.");
+        assertNotEquals(2 + 3, 4);
+    }
+
+    @Parameters({"devident", "devider"})
+    @Test(expectedExceptions = ArithmeticException.class)
+    public void exceptionTest(String devident, String devider){
+        int a = Integer.parseInt(devident) / Integer.parseInt(devider);
+    }
+
+    @AfterClass
+    public void after(){
+        System.out.println("after test case.");
     }
 }
